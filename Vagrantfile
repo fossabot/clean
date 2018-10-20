@@ -37,7 +37,6 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
 
-    override.vm.synced_folder ENV['HOME'], '/vagrant'
     override.vm.synced_folder (ENV['_VM_SYNCED_HOME'] || "../home"), '/home/vagrant'
   end
 end

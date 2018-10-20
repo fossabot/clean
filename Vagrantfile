@@ -22,6 +22,12 @@ Vagrant.configure("2") do |config|
     guest.vm.network "private_network", ip: "192.168.253.12"
   end
 
+  config.vm.define "amazon" do |guest|
+    guest.vm.box = "winky/amazonlinux-2"
+    guest.vm.hostname = "amazon"
+    guest.vm.network "private_network", ip: "192.168.253.13"
+  end
+
   config.vm.provider "virtualbox" do |v, override|
     v.linked_clone = true
 

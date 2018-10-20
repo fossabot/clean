@@ -1,22 +1,25 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "#{ENV['_VM_BOX'] || "archlinux/archlinux"}"
-
   config.ssh.shell = "bash"
   config.ssh.forward_agent = true
   config.ssh.insert_key = false
   config.ssh.keys_only = false
 
-  config.vm.define "guest" do |guest|
-    guest.vm.hostname = "#{ENV['_VM_HOSTNAME'] || "guest"}"
-    guest.vm.network "private_network", ip: "#{ENV['_VM_NETWORK_IP'] || "192.168.253.10"}"
+  config.vm.define "control" do |guest|
+    guest.vm.box = "ubuntu/trusty64"
+    guest.vm.hostname = "control"
+    guest.vm.network "private_network", ip: "192.168.253.10"
+  end
 
-    guest.trigger.before :up do |trigger|
-      trigger.run = {inline: "#{ENV['_TRIGGER_BEFORE_RUN'] || "date"}"}
-    end
+  config.vm.define "ubuntu" do |guest|
+    guest.vm.box = "ubuntu/trusty64"
+    guest.vm.hostname = "ubuntu"
+    guest.vm.network "private_network", ip: "192.168.253.11"
+  end
 
-    guest.trigger.after :destroy do |trigger|
-      trigger.run = {inline: "#{ENV['_TRIGGER_DESTROY_RUN'] || "date"}"}
-    end
+  config.vm.define "arch" do |guest|
+    guest.vm.box = "archlinux/archlinux"
+    guest.vm.hostname = "arch"
+    guest.vm.network "private_network", ip: "192.168.253.12"
   end
 
   config.vm.provider "virtualbox" do |v, override|
